@@ -9,12 +9,11 @@ exclude:
   - "/vendor/"
 
 # Site settings
-title: Esther's Data Analytics Projects
-subtitle: "Analyzing Anything"
+title: Analyzing Anything
+subtitle: "Daily Coding Journals for Data Analytics & Stylish Visualization"
 email: esthersam@naver.com
 name: Esther Harrie Chung
 description: >
-  Daily Coding Journals for Data Analytics & Stylish Visualization
   Current Location; South Korea, Gangnam-gu
 # Base URL of site (i.e. /blog). It should always start with a slash,
 # and never end with a slash. Set it to a blank value if hosting at the
