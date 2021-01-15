@@ -9,8 +9,8 @@ exclude:
   - "/vendor/"
 
 # Site settings
-title: Analyzing Anything
-subtitle: "Daily Coding Journals for Data Analytics & Stylish Visualization"
+title: Data-est-her
+subtitle: "Coding Journals on Data Analytics & Stylish Data Visualization"
 email: esthersam@naver.com
 name: Esther Harrie Chung
 description: >
