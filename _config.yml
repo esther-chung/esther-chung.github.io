@@ -81,16 +81,16 @@ descriptions:
 social:
   - name: Twitter
     icon: twitter
-    username: TheBenCentra
-    url: https://twitter.com/TheBenCentra
-    desc: Follow me on Twitter
+    username: #TheBenCentra
+    url: #https://twitter.com/TheBenCentra
+    desc: #Follow me on Twitter
     share: false
 
   - name: Facebook
     icon: facebook
-    username: thebencentra
+    username: #thebencentra
     url: ""
-    desc: Friend me on Facebook
+    desc: #Friend me on Facebook
     share: false
 
   - name: GitHub
