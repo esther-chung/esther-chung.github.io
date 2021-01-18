@@ -133,7 +133,7 @@ Limited corpus format, lack of data processing ability, poor learning of various
 * State-led large-capacity corpus construction, language rules/pattern learning     
 * Research on natural language processing systems that can be applied in practice     
 
-<h2>Corpus Linguistics from Convergence Perspective</h2>
+<h2>7. Corpus Linguistics from Convergence Perspective</h2>
 * Digital Humanities     
 Convergence field of humanities and social sciences and computational research using digital resources     
 (Data Analysis + Digital Resource Creation)     
