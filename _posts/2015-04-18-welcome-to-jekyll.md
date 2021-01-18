@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Corpus Linguistics #1(Prologue)"
-date:   2020-04-18T14:25:52-05:00
+date:   2020-04-18
 author: Esther Chung
 categories: Notes
 tags:	
