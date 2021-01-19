@@ -13,7 +13,7 @@ main_nav: true
       <p class="desc"><em>{{ desc.desc }}</em></p>
     {% endif %}
   {% endfor %}
-  <ul class="posts-list">
+  <ul class="programming-list">
   {% for post in site.categories[cat] %}
     <li>
       <strong>
