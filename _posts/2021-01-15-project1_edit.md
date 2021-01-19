@@ -1,8 +1,7 @@
-
 ---
 layout: post
 title:  "Comparative analysis: GDP vs GDP per capita #1(Intro)"
-date:   2019-05-15
+date:   2019-05-15T14:25:52-05:00
 author: Esther Chung
 categories: Projects
 ---
