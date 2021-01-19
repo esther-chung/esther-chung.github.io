@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Programming"
-permalink: /_programming/
+permalink: /programming/
 main_nav: true
 ---
 
