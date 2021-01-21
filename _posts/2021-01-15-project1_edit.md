@@ -4,6 +4,7 @@ title:  "Comparative analysis: GDP vs GDP per capita #1(Intro)"
 date:   2019-05-15T14:25:52-05:00
 author: Esther Chung
 categories: Projects
+tags: projects
 ---
 
 <h1 id="headings">Motivation</h1>
