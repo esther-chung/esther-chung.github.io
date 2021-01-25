@@ -39,8 +39,7 @@ blockquote {
 	font-style: italic;
 	border-left: 2px solid $light-gray;
 	margin-left: 0;
-	padding-left: 5em;
-	padding-right: 5em;
+	padding-left: 3em;
 }
 
 pre code.hljs {
@@ -161,7 +160,7 @@ pre code.hljs {
   }
   nav {
     float: none;
-    padding: 1.25em 0;
+    padding: 3em 0;
     @include media ($tablet) {
       float: right;
       line-height: 1.5em;
