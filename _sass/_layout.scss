@@ -160,7 +160,7 @@ pre code.hljs {
   }
   nav {
     float: none;
-    padding: 3em 0;
+    padding: 2em 0;
     @include media ($tablet) {
       float: right;
       line-height: 1.5em;
@@ -218,7 +218,7 @@ pre code.hljs {
 	margin-top: 66px;
 	.wrapper {
 		@include outer-container;
-		padding: 1em;
+		padding: 3em;
 	}
 	/*
 	*	index.html
