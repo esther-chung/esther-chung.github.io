@@ -24,7 +24,9 @@ pagination:
 			<strong>
         <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
 			</strong>
-			<p>{{ post.content | strip_html | truncatewords: 50 }}</p>
+			<p>{{ post.content | strip_html | truncatewords: 50 }}
+		-----------------------------------------------------------------------
+		</p>
 
   {% endfor %}
   </ul>
