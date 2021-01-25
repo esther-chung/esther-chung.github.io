@@ -218,7 +218,7 @@ pre code.hljs {
 	margin-top: 66px;
 	.wrapper {
 		@include outer-container;
-		padding: 3em;
+		padding: 1em;
 	}
 	/*
 	*	index.html
@@ -351,7 +351,7 @@ pre code.hljs {
 			@extend %default-ul;
 			li {
 				padding: modular-scale(-4);
-				padding-left: 0;
+				padding-left: modular-scale(-4);
 			}
 			.desc {
 				font-size: 0.9em;
