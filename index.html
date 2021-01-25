@@ -20,11 +20,12 @@ pagination:
 	{% capture cat %}{{ category | first }}{% endcapture %}
   <ul class="posts-list">
   {% for post in site.categories[cat] %}
-    <li>
-        <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
 
+			<strong>
+        <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+			</strong>
 			<p>{{ post.content | strip_html | truncatewords: 50 }}</p>
-    </li>
+
   {% endfor %}
   </ul>
   {% if forloop.last == false %}<hr>{% endif %}
