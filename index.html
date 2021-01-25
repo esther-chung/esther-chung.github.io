@@ -16,6 +16,7 @@ pagination:
 </div>
 
 
+<center>
 {% for category in site.categories %}
 	{% capture cat %}{{ category | first }}{% endcapture %}
   <ul class="posts-list">
@@ -29,7 +30,7 @@ pagination:
   </ul>
   {% if forloop.last == false %}<hr>{% endif %}
 {% endfor %}
-	
+</center>
 	
 
 <nav class="pagination" role="navigation">
