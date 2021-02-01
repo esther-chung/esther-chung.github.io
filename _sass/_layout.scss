@@ -351,7 +351,7 @@ pre code.hljs {
 			@extend %default-ul;
 			li {
 				padding: modular-scale(-4);
-				padding-left: ;
+				padding-left: 1px, bold;
 			}
 			.desc {
 				font-size: 0.9em;
