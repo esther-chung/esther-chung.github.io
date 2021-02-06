@@ -206,9 +206,7 @@ protocols:
     os_repo: "https://github.com/bencentra/centrarium.com"
     os_rcs_type: "git"
     os_src: "git@github.com:bencentra/centrarium.com.git"
-    
-    
- google_fonts: "Nanum-Gothic:400,700"   
+  
     
 pagination:
   enabled: true
