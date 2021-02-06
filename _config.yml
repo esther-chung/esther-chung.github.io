@@ -208,7 +208,7 @@ protocols:
     os_src: "git@github.com:bencentra/centrarium.com.git"
     
     
-    
+ google_fonts: "Nanum-Gothic:400,700"   
     
 pagination:
   enabled: true
