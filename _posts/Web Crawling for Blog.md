@@ -1,0 +1,752 @@
+# Web Crawler
+##### What is a web Crawler?    
+It is an Internet bot that systematically browses the World Wide Web,     
+typically for the purpose of Web indexing (web spidering).
+It copis pages for processing by a search engine,    
+which indexes the downloaded pages so that users can search more efficiently.
+
+##### There are three types of Crawling    
+* JSON - requests
+> uses dictionary
+* XML - requests
+> uses dictionary & Beautifulsoup
+* HTML - requests, selenium
+> uses Beautifulsoup
+     
+     
+I will go over these three types of Crawling by using several example sources 
+
+## 1. JSON
+* Crawling the information of "sunrise api"
+* Using the altitudes and latitudes of selected cities
+
+### 1) Google "Sunrise API" 
+* I will apply the latitude and longitude of Seoul in this case. 
+
+<table><tr><td>
+    
+![sunrise1.PNG](attachment:sunrise1.PNG) 
+    
+</td></tr></table>
+
+
+### 2) Find the Appropriate URL from the site 
+<table><tr><td>
+    
+![sunrise2.PNG](attachment:sunrise2.PNG)
+    
+</td></tr></table>
+
+<table><tr><td>
+    
+![sunrise3.PNG](attachment:sunrise3.PNG)
+    
+</td></tr></table>
+
+
+### 3) Use the Requests module - Get the information from the URL
+
+
+```python
+# longitude of Seoul -> 37.5, latitude of Seoul -> 127.0
+import requests
+url = 'https://api.sunrise-sunset.org/json?lat=37.5&lng=127.0&date=2021-02-08'
+# We can customize the url by changing the number following "lat =" and "lng =" 
+data = requests.get(url).json()
+data 
+# The numbers in this data represent the Coordinated Universal Time
+```
+
+
+
+
+    {'results': {'sunrise': '10:28:21 PM',
+      'sunset': '9:03:58 AM',
+      'solar_noon': '3:46:09 AM',
+      'day_length': '10:35:37',
+      'civil_twilight_begin': '10:01:20 PM',
+      'civil_twilight_end': '9:30:58 AM',
+      'nautical_twilight_begin': '9:30:26 PM',
+      'nautical_twilight_end': '10:01:53 AM',
+      'astronomical_twilight_begin': '8:59:55 PM',
+      'astronomical_twilight_end': '10:32:24 AM'},
+     'status': 'OK'}
+
+
+
+
+```python
+# pulling out the dictionary which is in another dictionary
+data['results'] 
+```
+
+
+
+
+    {'sunrise': '10:28:21 PM',
+     'sunset': '9:03:58 AM',
+     'solar_noon': '3:46:09 AM',
+     'day_length': '10:35:37',
+     'civil_twilight_begin': '10:01:20 PM',
+     'civil_twilight_end': '9:30:58 AM',
+     'nautical_twilight_begin': '9:30:26 PM',
+     'nautical_twilight_end': '10:01:53 AM',
+     'astronomical_twilight_begin': '8:59:55 PM',
+     'astronomical_twilight_end': '10:32:24 AM'}
+
+
+
+### 4) Select a Date
+
+
+```python
+date = '2020-08-01'
+url = 'https://api.sunrise-sunset.org/json?lat=37.5&lng=127.0&date='
+data = requests.get(url + date).json()
+data['results']
+```
+
+
+
+
+    {'sunrise': '8:36:41 PM',
+     'sunset': '10:39:55 AM',
+     'solar_noon': '3:38:18 AM',
+     'day_length': '14:03:14',
+     'civil_twilight_begin': '8:07:52 PM',
+     'civil_twilight_end': '11:08:44 AM',
+     'nautical_twilight_begin': '7:32:38 PM',
+     'nautical_twilight_end': '11:43:59 AM',
+     'astronomical_twilight_begin': '6:54:35 PM',
+     'astronomical_twilight_end': '12:22:01 PM'}
+
+
+
+### 5) Define a Function
+
+
+```python
+def by_date(date):
+    url = 'https://api.sunrise-sunset.org/json?lat=37.5&lng=127.0&date='
+    data = requests.get(url + date).json()
+    return data['results']
+
+by_date('2020-02-01') # example of the usage of function
+```
+
+
+
+
+    {'sunrise': '10:35:35 PM',
+     'sunset': '8:55:25 AM',
+     'solar_noon': '3:45:30 AM',
+     'day_length': '10:19:50',
+     'civil_twilight_begin': '10:08:08 PM',
+     'civil_twilight_end': '9:22:53 AM',
+     'nautical_twilight_begin': '9:36:51 PM',
+     'nautical_twilight_end': '9:54:10 AM',
+     'astronomical_twilight_begin': '9:06:05 PM',
+     'astronomical_twilight_end': '10:24:55 AM'}
+
+
+
+### 6) DataFrame and CSV
+
+
+```python
+# Let's try it for 3 days 
+
+import pandas as pd
+sample_list = []
+sample_list.append(by_date('2020-01-01'))
+sample_list.append(by_date('2020-01-02'))
+sample_list.append(by_date('2020-01-03'))
+df = pd.DataFrame(sample_list)
+df.to_csv('sample.csv', index = False)
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sunrise</th>
+      <th>sunset</th>
+      <th>solar_noon</th>
+      <th>day_length</th>
+      <th>civil_twilight_begin</th>
+      <th>civil_twilight_end</th>
+      <th>nautical_twilight_begin</th>
+      <th>nautical_twilight_end</th>
+      <th>astronomical_twilight_begin</th>
+      <th>astronomical_twilight_end</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10:46:31 PM</td>
+      <td>8:24:16 AM</td>
+      <td>3:35:23 AM</td>
+      <td>09:37:45</td>
+      <td>10:17:30 PM</td>
+      <td>8:53:17 AM</td>
+      <td>9:44:49 PM</td>
+      <td>9:25:58 AM</td>
+      <td>9:13:03 PM</td>
+      <td>9:57:44 AM</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10:46:40 PM</td>
+      <td>8:25:03 AM</td>
+      <td>3:35:52 AM</td>
+      <td>09:38:23</td>
+      <td>10:17:40 PM</td>
+      <td>8:54:03 AM</td>
+      <td>9:45:01 PM</td>
+      <td>9:26:42 AM</td>
+      <td>9:13:16 PM</td>
+      <td>9:58:27 AM</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10:46:47 PM</td>
+      <td>8:25:52 AM</td>
+      <td>3:36:19 AM</td>
+      <td>09:39:05</td>
+      <td>10:17:49 PM</td>
+      <td>8:54:50 AM</td>
+      <td>9:45:11 PM</td>
+      <td>9:27:27 AM</td>
+      <td>9:13:27 PM</td>
+      <td>9:59:11 AM</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+### 7) Collect 1 month Data using Loop
+
+
+```python
+def by_date_2(date):
+    url = 'https://api.sunrise-sunset.org/json?lat=37.5&lng=127.0&date='
+    data = requests.get(url + date).json()['results']
+    data['date'] = date # Adding date information
+    return data
+
+import time
+sample_list_2 = []
+
+for date in pd.date_range('2020-01-01', '2020-01-31'):
+    date = str(date)[:10]
+    sample_list_2.append(by_date_2(date))
+    time.sleep(0.2) 
+    
+df_new = pd.DataFrame(sample_list_2)
+```
+
+
+```python
+df_new # This took such a long time...
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sunrise</th>
+      <th>sunset</th>
+      <th>solar_noon</th>
+      <th>day_length</th>
+      <th>civil_twilight_begin</th>
+      <th>civil_twilight_end</th>
+      <th>nautical_twilight_begin</th>
+      <th>nautical_twilight_end</th>
+      <th>astronomical_twilight_begin</th>
+      <th>astronomical_twilight_end</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10:46:31 PM</td>
+      <td>8:24:16 AM</td>
+      <td>3:35:23 AM</td>
+      <td>09:37:45</td>
+      <td>10:17:30 PM</td>
+      <td>8:53:17 AM</td>
+      <td>9:44:49 PM</td>
+      <td>9:25:58 AM</td>
+      <td>9:13:03 PM</td>
+      <td>9:57:44 AM</td>
+      <td>2020-01-01</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10:46:40 PM</td>
+      <td>8:25:03 AM</td>
+      <td>3:35:52 AM</td>
+      <td>09:38:23</td>
+      <td>10:17:40 PM</td>
+      <td>8:54:03 AM</td>
+      <td>9:45:01 PM</td>
+      <td>9:26:42 AM</td>
+      <td>9:13:16 PM</td>
+      <td>9:58:27 AM</td>
+      <td>2020-01-02</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10:46:47 PM</td>
+      <td>8:25:52 AM</td>
+      <td>3:36:19 AM</td>
+      <td>09:39:05</td>
+      <td>10:17:49 PM</td>
+      <td>8:54:50 AM</td>
+      <td>9:45:11 PM</td>
+      <td>9:27:27 AM</td>
+      <td>9:13:27 PM</td>
+      <td>9:59:11 AM</td>
+      <td>2020-01-03</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>10:46:52 PM</td>
+      <td>8:26:42 AM</td>
+      <td>3:36:47 AM</td>
+      <td>09:39:50</td>
+      <td>10:17:56 PM</td>
+      <td>8:55:38 AM</td>
+      <td>9:45:20 PM</td>
+      <td>9:28:14 AM</td>
+      <td>9:13:37 PM</td>
+      <td>9:59:56 AM</td>
+      <td>2020-01-04</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>10:46:54 PM</td>
+      <td>8:27:33 AM</td>
+      <td>3:37:14 AM</td>
+      <td>09:40:39</td>
+      <td>10:18:01 PM</td>
+      <td>8:56:27 AM</td>
+      <td>9:45:26 PM</td>
+      <td>9:29:01 AM</td>
+      <td>9:13:45 PM</td>
+      <td>10:00:42 AM</td>
+      <td>2020-01-05</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>10:46:55 PM</td>
+      <td>8:28:26 AM</td>
+      <td>3:37:41 AM</td>
+      <td>09:41:31</td>
+      <td>10:18:03 PM</td>
+      <td>8:57:18 AM</td>
+      <td>9:45:31 PM</td>
+      <td>9:29:50 AM</td>
+      <td>9:13:52 PM</td>
+      <td>10:01:29 AM</td>
+      <td>2020-01-06</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>10:46:54 PM</td>
+      <td>8:29:19 AM</td>
+      <td>3:38:07 AM</td>
+      <td>09:42:25</td>
+      <td>10:18:04 PM</td>
+      <td>8:58:09 AM</td>
+      <td>9:45:35 PM</td>
+      <td>9:30:39 AM</td>
+      <td>9:13:57 PM</td>
+      <td>10:02:17 AM</td>
+      <td>2020-01-07</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>10:46:50 PM</td>
+      <td>8:30:14 AM</td>
+      <td>3:38:32 AM</td>
+      <td>09:43:24</td>
+      <td>10:18:04 PM</td>
+      <td>8:59:01 AM</td>
+      <td>9:45:36 PM</td>
+      <td>9:31:29 AM</td>
+      <td>9:13:59 PM</td>
+      <td>10:03:05 AM</td>
+      <td>2020-01-08</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>10:46:45 PM</td>
+      <td>8:31:10 AM</td>
+      <td>3:38:58 AM</td>
+      <td>09:44:25</td>
+      <td>10:18:01 PM</td>
+      <td>8:59:54 AM</td>
+      <td>9:45:35 PM</td>
+      <td>9:32:20 AM</td>
+      <td>9:14:01 PM</td>
+      <td>10:03:54 AM</td>
+      <td>2020-01-09</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10:46:37 PM</td>
+      <td>8:32:07 AM</td>
+      <td>3:39:22 AM</td>
+      <td>09:45:30</td>
+      <td>10:17:56 PM</td>
+      <td>9:00:48 AM</td>
+      <td>9:45:33 PM</td>
+      <td>9:33:12 AM</td>
+      <td>9:14:00 PM</td>
+      <td>10:04:44 AM</td>
+      <td>2020-01-10</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>10:46:28 PM</td>
+      <td>8:33:05 AM</td>
+      <td>3:39:46 AM</td>
+      <td>09:46:37</td>
+      <td>10:17:49 PM</td>
+      <td>9:01:43 AM</td>
+      <td>9:45:28 PM</td>
+      <td>9:34:04 AM</td>
+      <td>9:13:57 PM</td>
+      <td>10:05:35 AM</td>
+      <td>2020-01-11</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>10:46:16 PM</td>
+      <td>8:34:03 AM</td>
+      <td>3:40:10 AM</td>
+      <td>09:47:47</td>
+      <td>10:17:40 PM</td>
+      <td>9:02:39 AM</td>
+      <td>9:45:22 PM</td>
+      <td>9:34:57 AM</td>
+      <td>9:13:53 PM</td>
+      <td>10:06:26 AM</td>
+      <td>2020-01-12</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>10:46:03 PM</td>
+      <td>8:35:02 AM</td>
+      <td>3:40:33 AM</td>
+      <td>09:48:59</td>
+      <td>10:17:30 PM</td>
+      <td>9:03:36 AM</td>
+      <td>9:45:14 PM</td>
+      <td>9:35:51 AM</td>
+      <td>9:13:47 PM</td>
+      <td>10:07:18 AM</td>
+      <td>2020-01-13</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>10:45:47 PM</td>
+      <td>8:36:03 AM</td>
+      <td>3:40:55 AM</td>
+      <td>09:50:16</td>
+      <td>10:17:17 PM</td>
+      <td>9:04:33 AM</td>
+      <td>9:45:04 PM</td>
+      <td>9:36:45 AM</td>
+      <td>9:13:39 PM</td>
+      <td>10:08:10 AM</td>
+      <td>2020-01-14</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>10:45:29 PM</td>
+      <td>8:37:04 AM</td>
+      <td>3:41:16 AM</td>
+      <td>09:51:35</td>
+      <td>10:17:02 PM</td>
+      <td>9:05:30 AM</td>
+      <td>9:44:52 PM</td>
+      <td>9:37:40 AM</td>
+      <td>9:13:30 PM</td>
+      <td>10:09:03 AM</td>
+      <td>2020-01-15</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>10:45:10 PM</td>
+      <td>8:38:05 AM</td>
+      <td>3:41:37 AM</td>
+      <td>09:52:55</td>
+      <td>10:16:46 PM</td>
+      <td>9:06:29 AM</td>
+      <td>9:44:39 PM</td>
+      <td>9:38:36 AM</td>
+      <td>9:13:18 PM</td>
+      <td>10:09:57 AM</td>
+      <td>2020-01-16</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>10:44:48 PM</td>
+      <td>8:39:07 AM</td>
+      <td>3:41:58 AM</td>
+      <td>09:54:19</td>
+      <td>10:16:27 PM</td>
+      <td>9:07:28 AM</td>
+      <td>9:44:23 PM</td>
+      <td>9:39:32 AM</td>
+      <td>9:13:05 PM</td>
+      <td>10:10:51 AM</td>
+      <td>2020-01-17</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>10:44:24 PM</td>
+      <td>8:40:10 AM</td>
+      <td>3:42:17 AM</td>
+      <td>09:55:46</td>
+      <td>10:16:07 PM</td>
+      <td>9:08:27 AM</td>
+      <td>9:44:06 PM</td>
+      <td>9:40:28 AM</td>
+      <td>9:12:49 PM</td>
+      <td>10:11:45 AM</td>
+      <td>2020-01-18</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>10:43:58 PM</td>
+      <td>8:41:14 AM</td>
+      <td>3:42:36 AM</td>
+      <td>09:57:16</td>
+      <td>10:15:45 PM</td>
+      <td>9:09:27 AM</td>
+      <td>9:43:47 PM</td>
+      <td>9:41:25 AM</td>
+      <td>9:12:32 PM</td>
+      <td>10:12:40 AM</td>
+      <td>2020-01-19</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>10:43:31 PM</td>
+      <td>8:42:17 AM</td>
+      <td>3:42:54 AM</td>
+      <td>09:58:46</td>
+      <td>10:15:20 PM</td>
+      <td>9:10:28 AM</td>
+      <td>9:43:25 PM</td>
+      <td>9:42:23 AM</td>
+      <td>9:12:13 PM</td>
+      <td>10:13:35 AM</td>
+      <td>2020-01-20</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>10:43:01 PM</td>
+      <td>8:43:22 AM</td>
+      <td>3:43:11 AM</td>
+      <td>10:00:21</td>
+      <td>10:14:54 PM</td>
+      <td>9:11:28 AM</td>
+      <td>9:43:02 PM</td>
+      <td>9:43:20 AM</td>
+      <td>9:11:53 PM</td>
+      <td>10:14:30 AM</td>
+      <td>2020-01-21</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>10:42:30 PM</td>
+      <td>8:44:26 AM</td>
+      <td>3:43:28 AM</td>
+      <td>10:01:56</td>
+      <td>10:14:26 PM</td>
+      <td>9:12:29 AM</td>
+      <td>9:42:38 PM</td>
+      <td>9:44:18 AM</td>
+      <td>9:11:30 PM</td>
+      <td>10:15:26 AM</td>
+      <td>2020-01-22</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>10:41:56 PM</td>
+      <td>8:45:31 AM</td>
+      <td>3:43:44 AM</td>
+      <td>10:03:35</td>
+      <td>10:13:57 PM</td>
+      <td>9:13:31 AM</td>
+      <td>9:42:11 PM</td>
+      <td>9:45:17 AM</td>
+      <td>9:11:06 PM</td>
+      <td>10:16:22 AM</td>
+      <td>2020-01-23</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>10:41:21 PM</td>
+      <td>8:46:37 AM</td>
+      <td>3:43:59 AM</td>
+      <td>10:05:16</td>
+      <td>10:13:25 PM</td>
+      <td>9:14:33 AM</td>
+      <td>9:41:42 PM</td>
+      <td>9:46:15 AM</td>
+      <td>9:10:39 PM</td>
+      <td>10:17:18 AM</td>
+      <td>2020-01-24</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>10:40:44 PM</td>
+      <td>8:47:42 AM</td>
+      <td>3:44:13 AM</td>
+      <td>10:06:58</td>
+      <td>10:12:52 PM</td>
+      <td>9:15:35 AM</td>
+      <td>9:41:12 PM</td>
+      <td>9:47:14 AM</td>
+      <td>9:10:11 PM</td>
+      <td>10:18:15 AM</td>
+      <td>2020-01-25</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>10:40:05 PM</td>
+      <td>8:48:48 AM</td>
+      <td>3:44:27 AM</td>
+      <td>10:08:43</td>
+      <td>10:12:16 PM</td>
+      <td>9:16:37 AM</td>
+      <td>9:40:40 PM</td>
+      <td>9:48:13 AM</td>
+      <td>9:09:42 PM</td>
+      <td>10:19:12 AM</td>
+      <td>2020-01-26</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>10:39:25 PM</td>
+      <td>8:49:54 AM</td>
+      <td>3:44:39 AM</td>
+      <td>10:10:29</td>
+      <td>10:11:39 PM</td>
+      <td>9:17:39 AM</td>
+      <td>9:40:06 PM</td>
+      <td>9:49:12 AM</td>
+      <td>9:09:10 PM</td>
+      <td>10:20:08 AM</td>
+      <td>2020-01-27</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>10:38:42 PM</td>
+      <td>8:51:00 AM</td>
+      <td>3:44:51 AM</td>
+      <td>10:12:18</td>
+      <td>10:11:00 PM</td>
+      <td>9:18:42 AM</td>
+      <td>9:39:30 PM</td>
+      <td>9:50:12 AM</td>
+      <td>9:08:37 PM</td>
+      <td>10:21:06 AM</td>
+      <td>2020-01-28</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>10:37:58 PM</td>
+      <td>8:52:06 AM</td>
+      <td>3:45:02 AM</td>
+      <td>10:14:08</td>
+      <td>10:10:20 PM</td>
+      <td>9:19:44 AM</td>
+      <td>9:38:53 PM</td>
+      <td>9:51:11 AM</td>
+      <td>9:08:01 PM</td>
+      <td>10:22:03 AM</td>
+      <td>2020-01-29</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>10:37:12 PM</td>
+      <td>8:53:13 AM</td>
+      <td>3:45:12 AM</td>
+      <td>10:16:01</td>
+      <td>10:09:38 PM</td>
+      <td>9:20:47 AM</td>
+      <td>9:38:14 PM</td>
+      <td>9:52:11 AM</td>
+      <td>9:07:24 PM</td>
+      <td>10:23:00 AM</td>
+      <td>2020-01-30</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>10:36:24 PM</td>
+      <td>8:54:19 AM</td>
+      <td>3:45:22 AM</td>
+      <td>10:17:55</td>
+      <td>10:08:54 PM</td>
+      <td>9:21:50 AM</td>
+      <td>9:37:33 PM</td>
+      <td>9:53:10 AM</td>
+      <td>9:06:46 PM</td>
+      <td>10:23:58 AM</td>
+      <td>2020-01-31</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+
+```
